@@ -9,7 +9,9 @@ from .serializers import *
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
-    cps = CreateProfileSerializer(data=request.data)
-    if cps.is_valid(raise_exception=True):
-        cps.save()
-    return Response('good')
+    profile_serializer = CreateProfileSerializer(data=request.data)
+    if profile_serializer.is_valid(raise_exception=True):
+        profile_serializer.save()
+        return Response(status=status.HTTP_201_CREATED)
+    else:
+        return Response(profile_serializer.errors)

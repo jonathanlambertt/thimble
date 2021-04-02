@@ -5,4 +5,5 @@ from rest_framework.authtoken import views as rest_views
 app_name = 'users'
 urlpatterns = [
     path('', views.register),
+    path('login', rest_views.obtain_auth_token),
 ]
