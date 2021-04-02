@@ -15,3 +15,8 @@ def register(request):
         return Response(status=status.HTTP_201_CREATED)
     else:
         return Response(profile_serializer.errors)
+
+
+#todo :(
+def friends_list(request):
+    pass

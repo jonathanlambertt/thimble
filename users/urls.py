@@ -6,4 +6,5 @@ app_name = 'users'
 urlpatterns = [
     path('', views.register),
     path('login', rest_views.obtain_auth_token),
+    path('friends',views.friends_list),
 ]

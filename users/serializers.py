@@ -7,6 +7,18 @@ from .models import Profile
 
 import uuid
 
+
+class UsernameField(serializers.Field):
+    def to_representation(self, value):
+        return value.username
+
+class ProfileSerializer(serializers.ModelSerializer):
+    user = UsernameField()
+
+    class Meta:
+        model = Profile
+        fields = ['user', 'profile_picture']
+
 class CreateProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=3, max_length=50)
     password = serializers.CharField(min_length=6)
