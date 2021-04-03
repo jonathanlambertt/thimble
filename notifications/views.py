@@ -21,7 +21,14 @@ def handle_friend_request(request):
         Notification.create_notification(sender=request.user, recipient_uuid=request.data['recipient_uuid'],type=request.data['type'],text=request.data['text'])
         return Response(status=status.HTTP_200_OK)
     elif request.method=='PUT':
-        print('nooo')
+        current_notification = Notification.get_by_uuid(request.data['uuid'])
+        if int(request.data['user-response']):
+            #accept
+            pass
+        else:
+            #denied
+            current_notification.delete()
+            return Response(status=status.HTTP_200_OK)
     elif request.method=='DELETE':
         if 'notification_uuid' in request.data:
             Notification.get_by_uuid(request.data['notification_uuid']).delete()
