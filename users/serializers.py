@@ -22,7 +22,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class CreateProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=3, max_length=50)
     password = serializers.CharField(min_length=6)
-    full_name = serializers.CharField(max_length=100)
+    full_name = serializers.CharField(max_length=100, required=False)
 
     class Meta:
         model = User
