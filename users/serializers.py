@@ -7,7 +7,6 @@ from .models import Profile
 
 import uuid
 
-
 class UsernameField(serializers.Field):
     def to_representation(self, value):
         return value.username
@@ -22,6 +21,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class CreateProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=3, max_length=50)
     password = serializers.CharField(min_length=6)
+    email = serializers.CharField(allow_blank=False)
     full_name = serializers.CharField(max_length=100, required=False)
 
     class Meta:

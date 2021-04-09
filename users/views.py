@@ -37,6 +37,3 @@ def search(request, search_query):
     #     return Response(result_profiles)
     # else:
     return Response({'innit':ProfileSerializer(results, many=True)})
-#todo :(
-def friends_list(request):
-    pass
