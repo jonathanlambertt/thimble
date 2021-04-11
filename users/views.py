@@ -36,4 +36,4 @@ def search(request, search_query):
     #             result_profiles.append({"profile": ResultProfileSerializer(result_user_profile).data})
     #     return Response(result_profiles)
     # else:
-    return Response({'innit':ProfileSerializer(results, many=True)})
+    return Response('ye')
