@@ -7,6 +7,15 @@ from .models import Profile
 
 import uuid
 
+from django.core.validators import validate_email as django_validate_email
+
+def check_email_format(value):
+    try:
+        django_validate_email(value)
+    except:
+        raise serializers.ValidationError("Email format is incorrect")
+
+
 class UsernameField(serializers.Field):
     def to_representation(self, value):
         return value.username
@@ -21,7 +30,7 @@ class ProfileSerializer(serializers.ModelSerializer):
 class CreateProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=3, max_length=50)
     password = serializers.CharField(min_length=6)
-    email = serializers.CharField(allow_blank=False)
+    email = serializers.CharField(required=True, validators=[check_email_format])
     full_name = serializers.CharField(max_length=100, required=False)
 
     class Meta:
@@ -45,6 +54,6 @@ class CreateProfileSerializer(serializers.ModelSerializer):
     # Create new user, profile and auth token
     def create(self, validated_data):
         new_user = User.objects.create_user(username=validated_data['username'],password=validated_data['password'],email=validated_data['email'])
-        new_profile = Profile.objects.create(user=new_user, full_name=validated_data['full_name'], uuid=uuid.uuid4())
+        new_profile = Profile.objects.create(user=new_user, full_name=(validated_data['full_name'] if 'full_name' in validated_data else ''), uuid=uuid.uuid4())
         Token.objects.create(user=new_user)
         return new_profile
