@@ -13,8 +13,7 @@ def check_email_format(value):
     try:
         django_validate_email(value)
     except:
-        raise serializers.ValidationError("Email format is incorrect")
-
+        raise serializers.ValidationError("Invalid email")
 
 class UsernameField(serializers.Field):
     def to_representation(self, value):
