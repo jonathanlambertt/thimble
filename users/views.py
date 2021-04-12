@@ -5,6 +5,8 @@ from rest_framework import status
 
 from .serializers import *
 
+from notifications.models import Notification
+
 # Register a new user
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -18,22 +20,16 @@ def register(request):
 
 @api_view(['GET'])
 def search(request, search_query):
-    query = search_query
-    results = User.objects.filter(username__icontains=query)
-    print(results)
-    # searcher_profile = Profile.get_profile(request.user)
-    # result_profiles = []
-    # if results.count() != 0:
-    #     for result in results:
-    #         result_user = User.objects.get(username=result)
-    #         result_user_profile = Profile.objects.get(user=result_user)
-    #
-    #         if searcher_profile.friends.all().filter(user=result_user).exists():
-    #             result_profiles.append({"status": "friends", "profile": ResultProfileSerializer(result_user_profile).data})
-    #         elif searcher_profile == result_user_profile:
-    #             result_profiles.append({"status": "you", "profile": ResultProfileSerializer(result_user_profile).data})
-    #         else:
-    #             result_profiles.append({"profile": ResultProfileSerializer(result_user_profile).data})
-    #     return Response(result_profiles)
-    # else:
-    return Response('ye')
+    user_results = User.objects.filter(username__icontains=search_query)
+    print(user_results)
+    user_profile = Profile.get_profile(request.user)
+    search_results = []
+    for user_result in user_results:
+        current_profile = Profile.objects.get(user=user_result)
+        if user_profile.friends.all().filter(user=user_result).exists():
+            search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':True, 'pending_friend_request':False}).data) #need to implement friend request status
+        elif user_profile != user_result:
+            search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':False, 'pending_friend_request':False}).data)
+        
+    return Response(search_results)
+

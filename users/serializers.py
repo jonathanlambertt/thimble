@@ -9,6 +9,7 @@ import uuid
 
 from django.core.validators import validate_email as django_validate_email
 
+
 def check_email_format(value):
     try:
         django_validate_email(value)
@@ -24,7 +25,12 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        fields = ['user', 'profile_picture']
+        exclude = ['friends', 'id']
+
+class ProfileSearchResultSerializer(serializers.Serializer):
+    are_friends = serializers.BooleanField()
+    pending_friend_request = serializers.BooleanField()
+    profile = ProfileSerializer()
 
 class CreateProfileSerializer(serializers.ModelSerializer):
     username = serializers.CharField(min_length=3, max_length=50)

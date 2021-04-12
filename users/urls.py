@@ -6,5 +6,5 @@ app_name = 'users'
 urlpatterns = [
     path('', views.register),
     path('login', rest_views.obtain_auth_token),
-    path('search?q=<search_query>', views.search),
+    path('search/<search_query>', views.search),
 ]
