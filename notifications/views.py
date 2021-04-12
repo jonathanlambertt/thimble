@@ -18,20 +18,16 @@ def inbox(request):
 @api_view(['POST','PUT','DELETE'])
 def handle_friend_request(request):
     if request.method=='POST':
-        Notification.create_notification(sender=request.user, recipient_uuid=request.data['recipient_uuid'],type=request.data['type'],text=request.data['text'])
+        Notification.create_notification(sender=request.user, recipient_uuid=request.data['recipient_uuid'], notification_type=request.data['notification_type'],text=request.data['text'])
         return Response(status=status.HTTP_200_OK)
     elif request.method=='PUT':
-        current_notification = Notification.get_by_uuid(request.data['uuid'])
-        if int(request.data['user-response']):
-            #accept
-            pass
-        else:
-            #denied
-            current_notification.delete()
-            return Response(status=status.HTTP_200_OK)
+        current_notification = Notification.get_by_uuid(request.data['notification_uuid'])
+        current_notification.sender.friends.add(current_notification.recipient)
+        current_notification.delete()
+        return Response(status=status.HTTP_200_OK)
     elif request.method=='DELETE':
         if 'notification_uuid' in request.data:
             Notification.get_by_uuid(request.data['notification_uuid']).delete()
             return Response(status=status.HTTP_200_OK)
-
+    
     return Response(status=status.HTTP_400_BAD_REQUEST)

@@ -21,15 +21,14 @@ def register(request):
 @api_view(['GET'])
 def search(request, search_query):
     user_results = User.objects.filter(username__icontains=search_query)
-    print(user_results)
     user_profile = Profile.get_profile(request.user)
     search_results = []
     for user_result in user_results:
         current_profile = Profile.objects.get(user=user_result)
-        if user_profile.friends.all().filter(user=user_result).exists():
-            search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':True, 'pending_friend_request':False}).data) #need to implement friend request status
-        elif user_profile != user_result:
-            search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':False, 'pending_friend_request':False}).data)
+        if  user_profile != current_profile:
+            friendship = user_profile.friends.all().filter(user=user_result).exists()
+            pending = user_profile.sent_notifications.filter(recipient=current_profile).exists()
+            search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':friendship, 'pending_friend_request':pending}).data)
         
     return Response(search_results)
 

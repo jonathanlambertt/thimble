@@ -14,3 +14,4 @@ class Profile(models.Model):
 
     def get_profile(user):
         return Profile.objects.get(user=user)
+
