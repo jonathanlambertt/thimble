@@ -20,4 +20,5 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('v1/u/', include('users.urls', namespace='v1')),
     path('v1/n/', include('notifications.urls', namespace='v1')),
+    path('v1/g/', include('groups.urls', namespace='v1')),
 ]
