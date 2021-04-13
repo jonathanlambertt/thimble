@@ -6,7 +6,6 @@ from rest_framework import status
 from .serializers import *
 from users.models import Profile
 
-
 @api_view(['POST'])
 def create(request):
     group_serializer = CreateGroupSerializer(data=request.data)

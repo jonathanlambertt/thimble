@@ -29,6 +29,6 @@ def search(request, search_query):
             friendship = user_profile.friends.all().filter(user=user_result).exists()
             pending = user_profile.sent_notifications.filter(recipient=current_profile).exists()
             search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':friendship, 'pending_friend_request':pending}).data)
-        
+    
     return Response(search_results)
 
