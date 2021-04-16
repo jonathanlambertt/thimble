@@ -11,7 +11,6 @@ class TimeSerializer(serializers.Field):
     def to_representation(self, value):
         time_elapsed = datetime.now() - value
         time_difference = time_elapsed.total_seconds()
-        print(time_elapsed)
 
         if time_difference > 60: #time difference in total seconds
             if time_difference // 60 >= 60:
