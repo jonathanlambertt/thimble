@@ -13,8 +13,11 @@ class Group(models.Model):
     banner = models.URLField(blank=True)
     uuid = models.UUIDField()
 
-    def total_members(self):
-        return self.members.count
-
     def create_group(**kwargs):
         return Group.objects.create(creator=kwargs['creator'], name=kwargs['name'], description=kwargs['description'] if 'description' in kwargs else '', uuid=uuid.uuid4())
+
+    def add_member(self, profile):
+        self.members.add(profile)
+
+    def get_group_by_uuid(uuid):
+        return Group.objects.filter(uuid=uuid).first()
