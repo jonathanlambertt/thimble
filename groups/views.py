@@ -28,3 +28,13 @@ def add_member(request, group_id, profile_id):
     current_group = Group.get_group_by_uuid(group_id)
     current_group.add_member(Profile.get_by_uuid(profile_id))
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def remove_member(request, group_id, profile_id):
+    current_group = Group.get_group_by_uuid(group_id)
+    current_group.remove_member(Profile.get_by_uuid(profile_id))
+    return Response(status=status.HTTP_200_OK)
+
+@api_view(['PUT'])
+def leave_group(request, group_id):
+    return remove_member(request._request, group_id, Profile.get_profile(request.user).uuid)

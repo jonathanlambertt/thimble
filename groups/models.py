@@ -19,5 +19,8 @@ class Group(models.Model):
     def add_member(self, profile):
         self.members.add(profile)
 
+    def remove_member(self, profile):
+        self.members.remove(profile)
+
     def get_group_by_uuid(uuid):
         return Group.objects.filter(uuid=uuid).first()
