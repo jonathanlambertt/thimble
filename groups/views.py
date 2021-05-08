@@ -8,7 +8,6 @@ from .models import Group
 
 from users.models import Profile
 
-
 @api_view(['POST'])
 def create(request):
     group_serializer = CreateGroupSerializer(data=request.data)
@@ -25,9 +24,7 @@ def group_view(request, group_type):
         return Response(serialized_groups.data)
 
 @api_view(['PUT'])
-def add_member(request):
-    group_uuid = request.data['group-uuid']
-    new_member = Profile.get_profile(request.data['member-uuid'])
-    current_group = Group.get_group_by_uuid(group_uuid)
-    current_group.add_member(new_member)
+def add_member(request, group_id, profile_id):
+    current_group = Group.get_group_by_uuid(group_id)
+    current_group.add_member(Profile.get_by_uuid(profile_id))
     return Response(status=status.HTTP_200_OK)
