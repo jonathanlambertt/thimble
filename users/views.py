@@ -25,17 +25,9 @@ def search(request, search_query):
     search_results = []
     for user_result in user_results:
         current_profile = Profile.objects.get(user=user_result)
-<<<<<<< HEAD
         friendship = user_profile.friends.all().filter(user=user_result).exists() if user_profile != current_profile else True
         pending = user_profile.sent_notifications.filter(recipient=current_profile).exists()
         search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':friendship, 'pending_friend_request':pending}).data)
         
-=======
-        if  user_profile != current_profile:
-            friendship = user_profile.friends.all().filter(user=user_result).exists()
-            pending = user_profile.sent_notifications.filter(recipient=current_profile).exists()
-            search_results.append(ProfileSearchResultSerializer({'profile':current_profile, 'are_friends':friendship, 'pending_friend_request':pending}).data)
-    
->>>>>>> groups
     return Response(search_results)
 
