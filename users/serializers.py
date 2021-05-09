@@ -62,3 +62,10 @@ class CreateProfileSerializer(serializers.ModelSerializer):
         new_profile = Profile.objects.create(user=new_user, full_name=(validated_data['full_name'] if 'full_name' in validated_data else ''), uuid=uuid.uuid4())
         Token.objects.create(user=new_user)
         return new_profile
+
+class PostInfoSerializer(serializers.ModelSerializer):
+    user = UsernameField()
+
+    class Meta:
+        model = Profile
+        exclude = ['full_name', 'friends', 'id', 'uuid']
