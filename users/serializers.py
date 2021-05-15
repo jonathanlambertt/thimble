@@ -69,3 +69,10 @@ class PostInfoSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         exclude = ['full_name', 'friends', 'id', 'uuid']
+
+class FriendsListResultSerializer(serializers.ModelSerializer):
+    user = UsernameField()
+
+    class Meta:
+        model = Profile
+        exclude = ['id', 'friends']

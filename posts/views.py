@@ -12,9 +12,6 @@ from groups.models import Group
 
 import uuid
 
-##testing
-
-
 @api_view(['POST'])
 def test(request):
     print('incoming', request.data)

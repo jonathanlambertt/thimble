@@ -31,3 +31,8 @@ def search(request, search_query):
         
     return Response(search_results)
 
+@api_view(['GET'])
+def friends(request):
+    user_friends = Profile.get_profile(request.user).friends.all()
+    serialized_result = FriendsListResultSerializer(user_friends, many=True)
+    return Response(data=serialized_result.data)

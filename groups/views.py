@@ -7,6 +7,7 @@ from .serializers import *
 from .models import Group
 
 from users.models import Profile
+from users.serializers import FriendsListResultSerializer
 
 @api_view(['POST'])
 def create(request):
@@ -23,18 +24,21 @@ def group_view(request, group_type):
         serialized_groups = GroupViewSerializer(group_types[group_type].all(), many=True)
         return Response(serialized_groups.data)
 
-@api_view(['PUT'])
-def add_member(request, group_id, profile_id):
+@api_view(['GET'])
+def list_members(request, group_id):
     current_group = Group.get_group_by_uuid(group_id)
-    current_group.add_member(Profile.get_by_uuid(profile_id))
-    return Response(status=status.HTTP_200_OK)
-
-@api_view(['PUT'])
-def remove_member(request, group_id, profile_id):
-    current_group = Group.get_group_by_uuid(group_id)
-    current_group.remove_member(Profile.get_by_uuid(profile_id))
-    return Response(status=status.HTTP_200_OK)
+    serialized_data = FriendsListResultSerializer(current_group.members.all(), many=True)
+    return Response(data=serialized_data.data)
 
 @api_view(['PUT'])
 def leave_group(request, group_id):
-    return remove_member(request._request, group_id, Profile.get_profile(request.user).uuid)
+    return perform_action(request._request, group_id, 'remove', Profile.get_profile(request.user).uuid)
+
+@api_view(['PUT'])
+def perform_action(request, group_id, action, profile_id):
+    current_group = Group.get_group_by_uuid(group_id)
+    possible_actions = {'add':current_group.add_member, 'remove':current_group.remove_member}
+    if action in possible_actions:
+        possible_actions[action](Profile.get_by_uuid(profile_id))
+    
+    return Response(status=status.HTTP_200_OK)
