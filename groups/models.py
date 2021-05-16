@@ -14,7 +14,10 @@ class Group(models.Model):
     uuid = models.UUIDField()
 
     def create_group(**kwargs):
-        return Group.objects.create(creator=kwargs['creator'], name=kwargs['name'], description=kwargs['description'] if 'description' in kwargs else '', uuid=uuid.uuid4())
+        new_group = Group.objects.create(creator=kwargs['creator'], name=kwargs['name'], description=kwargs['description'] if 'description' in kwargs else '', uuid=uuid.uuid4())
+        new_group.members.add(kwargs['creator'])
+        new_group.save()
+        return new_group
 
     def add_member(self, profile):
         self.members.add(profile)

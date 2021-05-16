@@ -27,8 +27,8 @@ def group_view(request, group_type):
 @api_view(['GET'])
 def list_members(request, group_id):
     current_group = Group.get_group_by_uuid(group_id)
-    serialized_data = FriendsListResultSerializer(current_group.members.all(), many=True)
-    return Response(data=serialized_data.data)
+    serialized_data = FriendsListResultSerializer(current_group.members.all().exclude(uuid=Profile.get_profile(request.user).uuid), many=True)
+    return Response(serialized_data.data)
 
 @api_view(['PUT'])
 def leave_group(request, group_id):
@@ -42,3 +42,17 @@ def perform_action(request, group_id, action, profile_id):
         possible_actions[action](Profile.get_by_uuid(profile_id))
     
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def user_status(request, group_id):    
+    result = {'message':'member'}
+    if Group.get_group_by_uuid(group_id).creator == Profile.get_profile(request.user):
+        result['message'] = 'owner'
+    return Response(result)
+        
+@api_view(['GET'])
+def potential_members(request, group_id):
+    the_group = Group.get_group_by_uuid(group_id)
+    you = Profile.get_profile(request.user)
+    possible_members = you.friends.exclude(uuid__in=[member.uuid for member in the_group.members.all()])
+    return Response(FriendsListResultSerializer(possible_members, many=True).data)
