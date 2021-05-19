@@ -26,9 +26,11 @@ def group_view(request, group_type):
         return Response(serialized_groups.data)
 
 @api_view(['GET'])
-def list_members(request, group_id):
-    current_group = Group.get_group_by_uuid(group_id)
-    serialized_data = FriendsListResultSerializer(current_group.members.all().exclude(uuid=Profile.get_profile(request.user).uuid), many=True)
+def list_members(request, group_id, option):
+    current_group_members = Group.get_group_by_uuid(group_id).members
+    options = {'all': current_group_members.all(), 
+                'removable':current_group_members.all().exclude(uuid=Profile.get_profile(request.user).uuid)}
+    serialized_data = FriendsListResultSerializer(options[option], many=True)
     return Response(serialized_data.data)
 
 @api_view(['PUT'])
