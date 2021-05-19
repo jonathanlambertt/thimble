@@ -28,4 +28,4 @@ class GroupViewSerializer(GroupSerializer):
     #posts = count posts
     
     class Meta(GroupSerializer.Meta):
-        exclude = ['id', 'description', 'date', 'creator']
+        exclude = ['id', 'date', 'creator']
