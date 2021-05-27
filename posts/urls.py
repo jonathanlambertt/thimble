@@ -6,5 +6,4 @@ app_name = 'posts'
 
 urlpatterns = [
     path('', views.test),
-    path('holy', views.holy_moly),
 ]

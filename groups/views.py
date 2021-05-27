@@ -5,6 +5,7 @@ from rest_framework import status
 
 from .serializers import *
 from .models import Group
+from posts.serializers import *
 
 from users.models import Profile
 from users.serializers import FriendsListResultSerializer
@@ -59,3 +60,12 @@ def potential_members(request, group_id):
     you = Profile.get_profile(request.user)
     possible_members = you.friends.exclude(uuid__in=[member.uuid for member in the_group.members.all()])
     return Response(FriendsListResultSerializer(possible_members, many=True).data)
+
+@api_view(['GET'])
+def posts(request, group_id):
+    post_serializers = {0:TextPostSerializer, 1: LinkPostSerializer, 2: PhotoPostSerializer}
+    cur = Group.get_group_by_uuid(group_id)
+    info = []
+    for post in cur.posts.all():
+        info.append(post_serializers[post.post_type](post).data)
+    return Response(info)
