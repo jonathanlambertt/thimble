@@ -42,12 +42,12 @@ class CreateProfileSerializer(serializers.ModelSerializer):
         model = User
         fields = ['full_name','username','password','email']
 
-    # Check if username is taken
+    # Check if username is taken if not return lowercased username
     def validate_username(self, value):
         if User.objects.filter(username=value).exists():
             raise serializers.ValidationError("Username is already in use")
         else:
-            return value
+            return value.lower()
 
     # Check if email is taken
     def validate_email(self, value):

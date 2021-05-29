@@ -22,6 +22,6 @@ class TextPost(Post):
 
 class PhotoPost(Post):
     photo = models.URLField()
-    
+
 class LinkPost(Post):
-    link = models.URLField()
+    link = models.URLField(max_length=500)
