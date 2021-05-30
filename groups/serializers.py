@@ -23,9 +23,13 @@ class MemberCountField(serializers.Field):
     def to_representation(self, value):
         return value.count()
 
+class PostCountField(serializers.Field):
+    def to_representation(self, value):
+        return value.count()
+
 class GroupViewSerializer(GroupSerializer):
     members = MemberCountField()
-    #posts = count posts
+    posts = PostCountField()
     
     class Meta(GroupSerializer.Meta):
         exclude = ['id', 'date', 'creator']

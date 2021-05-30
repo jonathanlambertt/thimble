@@ -22,3 +22,16 @@ def test(request):
                 post_serializer.save(owner=Profile.get_profile(request.user), group=Group.get_group_by_uuid(request.data['group']), uuid=uuid.uuid4())
 
     return Response(status=status.HTTP_201_CREATED)
+
+
+def get_preview(link):
+    link_types = {'youtube': youtube_aggre, 'youtube': youtube_aggre, 'instagram':'instagram', 'twitter':'twitter'}
+
+    for link_type in link_types:
+        if link_type in link:
+            data = link_types[link_type](link)
+    
+    return data
+
+def youtube_aggre(link):
+    return ''
