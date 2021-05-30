@@ -66,6 +66,6 @@ def posts(request, group_id):
     post_serializers = {0:TextPostSerializer, 1: LinkPostSerializer, 2: PhotoPostSerializer}
     cur = Group.get_group_by_uuid(group_id)
     info = []
-    for post in cur.posts.all():
+    for post in cur.posts.all().order_by("-timestamp"):
         info.append(post_serializers[post.post_type](post).data)
     return Response(info)
