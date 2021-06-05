@@ -42,3 +42,13 @@ def friends(request):
 @api_view(['GET'])
 def profile(request):
     return Response(ProfileTabSerializer(Profile.get_profile(request.user).profile_page_info()).data)
+
+@api_view(['PUT'])
+def edit(request):
+    profile = Profile.get_profile(request.user)
+    if 'full_name' in request.data:
+        profile.full_name = request.data['full_name']
+    if 'profile_picture' in request.data:
+        profile.update_profile_picture(request.data['profile_picture'])
+    profile.save()
+    return Response(status=status.HTTP_200_OK)
