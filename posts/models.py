@@ -6,8 +6,9 @@ from datetime import datetime
 
 class PostType(models.IntegerChoices):
     TEXT = 0
-    PHOTO = 1
-    LINK = 2
+    LINK = 1
+    PHOTO = 2
+    
 
 class Post(PolymorphicModel):
     owner = models.ForeignKey('users.profile', related_name='posts', on_delete=models.PROTECT)

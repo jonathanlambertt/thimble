@@ -1,15 +1,26 @@
 from rest_framework import serializers
+from django.core.exceptions import ValidationError
 
 from .models import PhotoPost, LinkPost, TextPost
 
 from users.serializers import PostInfoSerializer
 from notifications.serializers import TimeSerializer
 
+from .PhotoHelper import upload_photo
+
+class PhotoField(serializers.Field):
+    def to_internal_value(self, value):
+        if value:
+            return upload_photo(value)
+        raise ValidationError('Please choose a photo.')
+
 class CreatePhotoPostSerializer(serializers.ModelSerializer):
+    photo = PhotoField()
 
     class Meta:
         model = PhotoPost
         fields = ['post_type','title','photo']
+        extra_kwargs = {'photo': {'required' : True}}
 
 class CreateTextPostSerializer(serializers.ModelSerializer):
 
