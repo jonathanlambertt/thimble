@@ -46,9 +46,5 @@ def profile(request):
 @api_view(['PUT'])
 def edit(request):
     profile = Profile.get_profile(request.user)
-    if 'full_name' in request.data:
-        profile.full_name = request.data['full_name']
-    if 'profile_picture' in request.data:
-        profile.update_profile_picture(request.data['profile_picture'])
-    profile.save()
+    profile.edit_attributes(**request.data.dict())
     return Response(status=status.HTTP_200_OK)

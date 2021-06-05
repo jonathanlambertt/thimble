@@ -10,12 +10,20 @@ from posts.serializers import *
 from users.models import Profile
 from users.serializers import FriendsListResultSerializer
 
+from posts.PhotoHelper import update_photo, upload_photo
+
 @api_view(['POST'])
 def create(request):
     group_serializer = CreateGroupSerializer(data=request.data)
     if group_serializer.is_valid(raise_exception=True):
         group_serializer.save(creator=Profile.get_profile(request.user))
         return Response(status=status.HTTP_201_CREATED)
+
+@api_view(['PUT'])
+def edit_group(request, group_id):
+    group = Group.get_by_uuid(group_id)
+    group.edit_attributes(**request.data.dict())
+    return Response(status=status.HTTP_200_OK)
 
 @api_view(['GET'])
 def group_view(request, group_type):

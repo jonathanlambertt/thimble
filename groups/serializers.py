@@ -3,16 +3,24 @@ from rest_framework import serializers
 from .models import Group
 from users.serializers import ProfileSerializer
 
+from posts.PhotoHelper import upload_photo
+
 class GroupSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Group
         exclude = ['id']
 
+class CreateBannerSerializer(serializers.Field):
+    def to_internal_value(self, value):
+        if value:
+            return upload_photo(value)
+
 class CreateGroupSerializer(GroupSerializer):
     name = serializers.CharField(max_length=60)
     description = serializers.CharField(max_length=150, required=False)
-    
+    banner = CreateBannerSerializer(required=False)
+
     class Meta(GroupSerializer.Meta):
         exclude = ['members', 'uuid', 'creator']
 

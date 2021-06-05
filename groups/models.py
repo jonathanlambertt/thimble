@@ -4,6 +4,8 @@ from datetime import datetime
 
 import uuid
 
+from posts.PhotoHelper import upload_photo, update_photo
+
 class Group(models.Model):
     creator = models.ForeignKey('users.profile', related_name='my_groups', on_delete=models.PROTECT)
     name = models.CharField(max_length=60)
@@ -14,10 +16,23 @@ class Group(models.Model):
     uuid = models.UUIDField()
 
     def create_group(**kwargs):
-        new_group = Group.objects.create(creator=kwargs['creator'], name=kwargs['name'], description=kwargs['description'] if 'description' in kwargs else '', uuid=uuid.uuid4())
-        new_group.members.add(kwargs['creator'])
+        new_group = Group.objects.create(creator=kwargs['creator'], name=kwargs['name'], uuid=uuid.uuid4())
+        new_group.edit_attributes(**kwargs)
+        new_group.add_member(kwargs['creator'])
         new_group.save()
         return new_group
+
+    def edit_attributes(self, **kwargs):
+        for attribute in kwargs:
+            if hasattr(self, attribute):
+                if attribute == 'banner':
+                    if self.banner:
+                        update_photo(self.banner, kwargs['banner'])
+                    else:   
+                        self.__setattr__('banner', upload_photo(kwargs['banner']))
+                else:
+                    self.__setattr__(attribute, kwargs[attribute])
+        self.save()
 
     def add_member(self, profile):
         self.members.add(profile)
@@ -25,5 +40,5 @@ class Group(models.Model):
     def remove_member(self, profile):
         self.members.remove(profile)
 
-    def get_group_by_uuid(uuid):
+    def get_by_uuid(uuid):
         return Group.objects.filter(uuid=uuid).first()

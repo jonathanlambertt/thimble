@@ -11,7 +11,7 @@ def upload_photo(photo):
     blob.make_public()
     return blob.public_url
 
-def update_profile(current_photo, photo):
+def update_photo(current_photo, photo):
     blob = media_bucket.get_blob(current_photo[-36:])
     blob.upload_from_file(photo, content_type="image/jpeg")
     blob.make_public()

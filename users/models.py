@@ -2,7 +2,7 @@ from django.db import models
 
 from django.contrib.auth.models import User
 
-from posts.PhotoHelper import upload_photo, update_profile
+from posts.PhotoHelper import upload_photo, update_photo
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -20,9 +20,14 @@ class Profile(models.Model):
     def profile_page_info(self):
         return {'posts':self.posts, 'groups':self.joined_groups, 'friends':self.friends, 'profile_picture': self.profile_picture}
 
-    def update_profile_picture(self, new_picture):
-        if self.profile_picture:
-            update_profile(self.profile_picture, new_picture)
-        else:
-            self.profile_picture = upload_photo(new_picture)
+    def edit_attributes(self, **kwargs):
+        for attribute in kwargs:
+            if hasattr(self, attribute):
+                if attribute == 'profile_picture':
+                    if self.profile_picture:
+                        update_photo(self.profile_picture, kwargs['profile_picture'])
+                    else:   
+                        self.__setattr__('profile_picture', upload_photo(kwargs['profile_picture']))
+                else:
+                    self.__setattr__(attribute, kwargs[attribute])
         self.save()
