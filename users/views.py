@@ -7,6 +7,8 @@ from .serializers import *
 
 from notifications.models import Notification
 
+from .models import Profile
+
 # Register a new user
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -36,3 +38,7 @@ def friends(request):
     user_friends = Profile.get_profile(request.user).friends.all()
     serialized_result = FriendsListResultSerializer(user_friends, many=True)
     return Response(data=serialized_result.data)
+
+@api_view(['GET'])
+def profile(request):
+    return Response(ProfileTabSerializer(Profile.get_profile(request.user).profile_page_info()).data)

@@ -76,3 +76,13 @@ class FriendsListResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
         exclude = ['id', 'friends']
+
+class CountField(serializers.Field):
+    def to_representation(self, value):
+        return value.count()
+
+class ProfileTabSerializer(serializers.Serializer):
+    posts = CountField()
+    groups = CountField()
+    friends = CountField()
+    profile_picture = serializers.CharField()
