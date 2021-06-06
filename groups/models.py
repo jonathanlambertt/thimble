@@ -5,6 +5,7 @@ from datetime import datetime
 import uuid
 
 from posts.PhotoHelper import upload_photo, update_photo
+from users.RedisHelper import delete_post_from_feed
 
 class Group(models.Model):
     creator = models.ForeignKey('users.profile', related_name='my_groups', on_delete=models.PROTECT)

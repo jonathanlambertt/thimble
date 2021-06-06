@@ -36,7 +36,7 @@ def group_view(request, group_type):
 
 @api_view(['GET'])
 def list_members(request, group_id, option):
-    current_group_members = Group.get_group_by_uuid(group_id).members
+    current_group_members = Group.get_by_uuid(group_id).members
     options = {'all': current_group_members.all(), 
                 'removable':current_group_members.all().exclude(uuid=Profile.get_profile(request.user).uuid)}
     serialized_data = FriendsListResultSerializer(options[option], many=True)
@@ -48,7 +48,7 @@ def leave_group(request, group_id):
 
 @api_view(['PUT'])
 def perform_action(request, group_id, action, profile_id):
-    current_group = Group.get_group_by_uuid(group_id)
+    current_group = Group.get_by_uuid(group_id)
     possible_actions = {'add':current_group.add_member, 'remove':current_group.remove_member}
     if action in possible_actions:
         possible_actions[action](Profile.get_by_uuid(profile_id))

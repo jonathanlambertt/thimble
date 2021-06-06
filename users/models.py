@@ -4,12 +4,19 @@ from django.contrib.auth.models import User
 
 from posts.PhotoHelper import upload_photo, update_photo
 
+from .RedisHelper import *
+
+from posts.models import Post
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, blank=True)
     profile_picture = models.URLField()
     uuid = models.UUIDField()
     friends = models.ManyToManyField('self')
+    
+    def get_feed(self):
+        return [Post.objects.filter(uuid=post_uuid.decode('utf-8')).first() for post_uuid in get_recent_posts(str(self.uuid))]
 
     def get_by_uuid(uuid):
         return Profile.objects.get(uuid=uuid)
