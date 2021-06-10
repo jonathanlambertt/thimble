@@ -7,6 +7,7 @@ media_bucket = storage_client.get_bucket(os.environ["MEDIA_BUCKET"])
 
 def upload_photo(photo):
     blob = media_bucket.blob(f'{uuid.uuid4()}')
+    print(type(photo), photo)
     blob.upload_from_file(photo, content_type="image/jpeg")
     blob.make_public()
     return blob.public_url

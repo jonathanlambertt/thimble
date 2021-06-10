@@ -36,7 +36,7 @@ class CreateLinkPostSerializer(serializers.ModelSerializer):
 
 class GroupField(serializers.Field):
     def to_representation(self, value):
-        return value.name
+        return {'name': value.name, 'uuid': value.uuid}
 
 class PhotoPostSerializer(serializers.ModelSerializer):
     owner = PostInfoSerializer()

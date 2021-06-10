@@ -29,8 +29,8 @@ class Group(models.Model):
                 if attribute == 'banner':
                     if self.banner:
                         update_photo(self.banner, kwargs['banner'])
-                    else:   
-                        self.__setattr__('banner', upload_photo(kwargs['banner']))
+                    else: 
+                        self.__setattr__('banner', kwargs['banner'])
                 else:
                     self.__setattr__(attribute, kwargs[attribute])
         self.save()
