@@ -86,3 +86,4 @@ class ProfileTabSerializer(serializers.Serializer):
     groups = CountField()
     friends = CountField()
     profile_picture = serializers.CharField()
+    full_name = serializers.CharField()

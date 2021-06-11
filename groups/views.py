@@ -58,13 +58,13 @@ def perform_action(request, group_id, action, profile_id):
 @api_view(['GET'])
 def user_status(request, group_id):    
     result = {'message':'member'}
-    if Group.get_group_by_uuid(group_id).creator == Profile.get_profile(request.user):
+    if Group.get_by_uuid(group_id).creator == Profile.get_profile(request.user):
         result['message'] = 'owner'
     return Response(result)
         
 @api_view(['GET'])
 def potential_members(request, group_id):
-    the_group = Group.get_group_by_uuid(group_id)
+    the_group = Group.get_by_uuid(group_id)
     you = Profile.get_profile(request.user)
     possible_members = you.friends.exclude(uuid__in=[member.uuid for member in the_group.members.all()])
     return Response(FriendsListResultSerializer(possible_members, many=True).data)
