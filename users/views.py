@@ -10,7 +10,6 @@ from notifications.models import Notification
 
 from .models import Profile
 
-# Register a new user
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
