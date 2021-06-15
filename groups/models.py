@@ -5,6 +5,7 @@ from datetime import datetime
 import uuid
 
 from posts.PhotoHelper import upload_photo, update_photo
+from users.RedisHelper import delete_post_from_feed
 
 class Group(models.Model):
     creator = models.ForeignKey('users.profile', related_name='my_groups', on_delete=models.PROTECT)
@@ -28,8 +29,8 @@ class Group(models.Model):
                 if attribute == 'banner':
                     if self.banner:
                         update_photo(self.banner, kwargs['banner'])
-                    else:   
-                        self.__setattr__('banner', upload_photo(kwargs['banner']))
+                    else: 
+                        self.__setattr__('banner', kwargs['banner'])
                 else:
                     self.__setattr__(attribute, kwargs[attribute])
         self.save()

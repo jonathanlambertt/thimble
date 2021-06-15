@@ -4,12 +4,12 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import *
+from posts.serializers import *
 
 from notifications.models import Notification
 
 from .models import Profile
 
-# Register a new user
 @api_view(['POST'])
 @permission_classes([AllowAny])
 def register(request):
@@ -48,3 +48,9 @@ def edit(request):
     profile = Profile.get_profile(request.user)
     profile.edit_attributes(**request.data.dict())
     return Response(status=status.HTTP_200_OK)
+
+@api_view(['GET'])
+def feed(request):
+    post_serializers = {0:TextPostSerializer, 1: LinkPostSerializer, 2:  PhotoPostSerializer}
+    profile = Profile.get_profile(request.user)
+    return Response([post_serializers[post.post_type](post).data for post in profile.get_feed() if post])
