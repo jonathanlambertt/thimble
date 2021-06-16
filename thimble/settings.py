@@ -24,7 +24,10 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ['SECRET_KEY']
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+if 'PROD_DB_NAME' in os.environ:
+    DEBUG=False
+else:
+    DEBUG=True
 
 ALLOWED_HOSTS = ['192.168.1.16', '192.168.1.11', '161.35.224.25', 'thimbleapp.co', 'localhost', 'www.thimbleapp.co']
 
