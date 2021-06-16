@@ -26,7 +26,7 @@ SECRET_KEY = os.environ['SECRET_KEY']
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['192.168.1.16', '192.168.1.11', '161.35.224.25', 'thimbleapp.co', 'localhost']
+ALLOWED_HOSTS = ['192.168.1.16', '192.168.1.11', '161.35.224.25', 'thimbleapp.co', 'localhost', 'www.thimbleapp.co']
 
 
 # Application definition
