@@ -5,12 +5,7 @@ from users.serializers import ProfileSerializer
 
 from posts.PhotoHelper import upload_photo
 
-class UserStatusSerializer(serializers.Field):
-    def to_representation(self, value):
-        return 
-
 class GroupSerializer(serializers.ModelSerializer):
-    #watermelon = UserStatusSerializer()
 
     class Meta:
         model = Group

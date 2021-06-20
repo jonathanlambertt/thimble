@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from datetime import datetime
 
@@ -27,10 +28,13 @@ class Group(models.Model):
         for attribute in kwargs:
             if hasattr(self, attribute):
                 if attribute == 'banner':
-                    if self.banner:
-                        update_photo(self.banner, kwargs['banner'])
+                    if type(kwargs['banner'])==InMemoryUploadedFile:
+                        if self.banner:
+                            self.__setattr__('banner', update_photo(self.banner, kwargs['banner']))
+                        else:
+                            self.__setattr__('banner', upload_photo(kwargs['banner']))
                     else:
-                        self.__setattr__('banner', upload_photo(kwargs['banner'])) 
+                        self.__setattr__('banner', kwargs['banner'])
                 else:
                     self.__setattr__(attribute, kwargs[attribute])
         self.save()

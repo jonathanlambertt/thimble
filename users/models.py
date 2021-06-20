@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.files.uploadedfile import InMemoryUploadedFile
 
 from django.contrib.auth.models import User
 
@@ -31,10 +32,13 @@ class Profile(models.Model):
         for attribute in kwargs:
             if hasattr(self, attribute):
                 if attribute == 'profile_picture':
-                    if self.profile_picture:
-                        update_photo(self.profile_picture, kwargs['profile_picture'])
-                    else:   
-                        self.__setattr__('profile_picture', upload_photo(kwargs['profile_picture']))
+                    if type(kwargs['profile_picture'])==InMemoryUploadedFile:
+                        if self.profile_picture:
+                            self.__setattr__('profile_picture', update_photo(self.profile_picture, kwargs['profile_picture']))
+                        else:
+                            self.__setattr__('profile_picture', upload_photo(kwargs['profile_picture']))
+                    else:
+                        self.__setattr__('profile_picture', kwargs['profile_picture'])
                 else:
                     self.__setattr__(attribute, kwargs[attribute])
         self.save()

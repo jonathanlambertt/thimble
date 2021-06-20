@@ -13,6 +13,8 @@ def upload_photo(photo):
 
 def update_photo(current_photo, photo):
     blob = media_bucket.get_blob(current_photo[-36:])
-    blob.upload_from_file(photo, content_type="image/jpeg")
-    blob.make_public()
-    blob.update()
+    blob.delete()
+    return upload_photo(photo)
+    # blob.upload_from_file(photo, content_type="image/jpeg")
+    # blob.make_public()
+    # blob.update()
