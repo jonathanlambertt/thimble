@@ -25,7 +25,7 @@ class Profile(models.Model):
         return Profile.objects.get(user=user)
 
     def profile_page_info(self):
-        return {'posts':self.posts, 'groups':self.joined_groups, 'friends':self.friends, 'profile_picture': self.profile_picture, 'full_name': self.full_name}
+        return {'posts':self.posts, 'groups':self.joined_groups, 'friends':self.friends, 'profile_picture': self.profile_picture, 'full_name': self.full_name, 'username': self.user.username}
 
     def edit_attributes(self, **kwargs):
         for attribute in kwargs:
