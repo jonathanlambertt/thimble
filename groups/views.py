@@ -31,7 +31,7 @@ def group_view(request, group_type):
     group_types = {'joined':current_profile.joined_groups.all().exclude(creator=current_profile),
                    'created':current_profile.my_groups.all()}
     if group_type in group_types:
-        serialized_groups = GroupViewSerializer(group_types[group_type], many=True)
+        serialized_groups = GroupViewSerializer([{'group': group, 'user_status':('owner' if Group.get_by_uuid(group.uuid).creator == current_profile else 'member')} for group in group_types[group_type]], many=True)
         return Response(serialized_groups.data)
 
 @api_view(['GET'])
@@ -54,13 +54,6 @@ def perform_action(request, group_id, action, profile_id):
         possible_actions[action](Profile.get_by_uuid(profile_id))
     
     return Response(status=status.HTTP_200_OK)
-
-@api_view(['GET'])
-def user_status(request, group_id):    
-    result = {'message':'member'}
-    if Group.get_by_uuid(group_id).creator == Profile.get_profile(request.user):
-        result['message'] = 'owner'
-    return Response(result)
         
 @api_view(['GET'])
 def potential_members(request, group_id):

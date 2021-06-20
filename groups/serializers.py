@@ -5,8 +5,13 @@ from users.serializers import ProfileSerializer
 
 from posts.PhotoHelper import upload_photo
 
+class UserStatusSerializer(serializers.Field):
+    def to_representation(self, value):
+        return 
+
 class GroupSerializer(serializers.ModelSerializer):
-    
+    #watermelon = UserStatusSerializer()
+
     class Meta:
         model = Group
         exclude = ['id']
@@ -35,9 +40,13 @@ class PostCountField(serializers.Field):
     def to_representation(self, value):
         return value.count()
 
-class GroupViewSerializer(GroupSerializer):
+class AdvancedGroupSerializer(GroupSerializer):
     members = MemberCountField()
     posts = PostCountField()
     
     class Meta(GroupSerializer.Meta):
         exclude = ['id', 'date', 'creator']
+
+class GroupViewSerializer(serializers.Serializer):
+    group = AdvancedGroupSerializer()
+    user_status = serializers.CharField(max_length=25)
