@@ -17,6 +17,8 @@ def inbox(request):
 @api_view(['POST'])
 def send(request):
     Notification.create_notification(sender=request.user, recipient_uuid=request.data['recipient_uuid'], notification_type=request.data['notification_type'],text=request.data['text'])
+    if request.data['notification_type'] == '1':
+        Profile.get_by_uuid(request.data['recipient_uuid']).send_notification('New friend request')
     return Response(status=status.HTTP_201_CREATED)
 
 @api_view(['PUT','DELETE'])

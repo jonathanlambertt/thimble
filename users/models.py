@@ -22,8 +22,10 @@ class Profile(models.Model):
     
     def send_notification(self, notification, extra=None):
         if self.notification_token != '':
+            print(notification)
             try:
-                response = PushClient().publish(PushMessage(to=self.notification_token, body=notification, data=extra))
+                response = PushClient().publish(PushMessage(to=self.notification_token, body=notification, data=extra, title="Test"))
+                print(response)
             except PushServerError as exc:
                 print('Error sending notification: info<',exc,'>')
                 raise
