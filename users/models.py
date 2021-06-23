@@ -9,13 +9,37 @@ from .RedisHelper import *
 
 from posts.models import Post
 
+from exponent_server_sdk import (DeviceNotRegisteredError, PushClient, PushMessage, PushServerError, PushTicketError)
+from requests.exceptions import ConnectionError, HTTPError
+
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     full_name = models.CharField(max_length=100, blank=True)
     profile_picture = models.URLField()
     uuid = models.UUIDField()
     friends = models.ManyToManyField('self')
+    notification_token = models.CharField(max_length=100, blank=True)
     
+    def send_notification(self, notification, extra=None):
+        if self.notification_token != '':
+            try:
+                response = PushClient().publish(PushMessage(to=self.notification_token, body=notification, data=extra))
+            except PushServerError as exc:
+                print('Error sending notification: info<',exc,'>')
+                raise
+            except (ConnectionError, HTTPError) as exc:
+                print('Error with notification connection: info<',exc,'>')
+                raise self.retry(exc=exc)
+
+            try:
+                response.validate_response()
+            except DeviceNotRegisteredError:
+                self.notification_token = ''
+                self.save()
+            except PushTicketError as exc:
+                print('Error pushing notification: info<',exc,'>')
+                raise self.retry(exc=exc)
+
     def get_feed(self):
         return [Post.objects.filter(uuid=post_uuid.decode('utf-8')).first() for post_uuid in get_recent_posts(str(self.uuid))]
 

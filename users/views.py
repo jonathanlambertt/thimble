@@ -46,6 +46,7 @@ def profile(request):
 @api_view(['PUT'])
 def edit(request):
     profile = Profile.get_profile(request.user)
+    profile.send_notification('test')
     profile.edit_attributes(**request.data.dict())
     return Response(status=status.HTTP_200_OK)
 
