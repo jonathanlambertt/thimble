@@ -21,8 +21,8 @@ class Notification(models.Model):
     def create_notification(**kwargs):
         recipient = Profile.get_by_uuid(kwargs['recipient_uuid'])
         sender = Profile.get_profile(user=kwargs['sender'])
-        Notification.objects.create(notification_type=kwargs['notification_type'], sender=sender,recipient=recipient,
-        text=kwargs['text'],uuid=uuid.uuid4())
+        Notification.objects.create(notification_type=kwargs['notification_type'], sender=sender, recipient=recipient,
+        text=kwargs['text'], uuid=uuid.uuid4())
 
     def get_by_uuid(uuid):
         return Notification.objects.get(uuid=uuid)
