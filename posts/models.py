@@ -18,6 +18,10 @@ class Post(PolymorphicModel):
     timestamp = models.DateTimeField(default=datetime.now)
     uuid = models.UUIDField()
 
+    def get_by_uuid(uuid):
+        return Post.objects.filter(uuid=uuid).first()
+
+
 class TextPost(Post):
     text = models.CharField(max_length=140)
 

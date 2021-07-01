@@ -20,12 +20,17 @@ class UsernameField(serializers.Field):
     def to_representation(self, value):
         return value.username
 
+class ProfilePictureSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Profile
+        fields = ['profile_picture']
+
 class ProfileSerializer(serializers.ModelSerializer):
     user = UsernameField()
 
     class Meta:
         model = Profile
-        exclude = ['friends', 'id']
+        exclude = ['friends', 'id', 'notification_token']
 
 class ProfileSearchResultSerializer(serializers.Serializer):
     are_friends = serializers.BooleanField()
