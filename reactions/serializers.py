@@ -28,3 +28,6 @@ class ReactionInfoSerializer(serializers.Serializer):
     total_reactions = CountItemsSerializer()
     newest_three = NewestThreeSerializer()
 
+class FeedReactionsSerializer(serializers.Field):
+    def to_representation(self, value):
+        return ReactionInfoSerializer({'newest_three': value, 'total_reactions': value}).data

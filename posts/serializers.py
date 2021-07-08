@@ -6,6 +6,8 @@ from .models import PhotoPost, LinkPost, TextPost
 from users.serializers import PostInfoSerializer
 from notifications.serializers import TimeSerializer
 
+from reactions.serializers import FeedReactionsSerializer
+
 from .PhotoHelper import upload_photo
 
 class PhotoField(serializers.Field):
@@ -42,6 +44,7 @@ class PhotoPostSerializer(serializers.ModelSerializer):
     owner = PostInfoSerializer()
     group = GroupField()
     timestamp = TimeSerializer()
+    reactions = FeedReactionsSerializer()
 
     class Meta:
         model = PhotoPost
@@ -51,15 +54,17 @@ class TextPostSerializer(serializers.ModelSerializer):
     owner = PostInfoSerializer()
     group = GroupField()
     timestamp = TimeSerializer()
+    reactions = FeedReactionsSerializer()
 
     class Meta:
         model = TextPost
         exclude = ['id', 'polymorphic_ctype']
-
+ 
 class LinkPostSerializer(serializers.ModelSerializer):
     owner = PostInfoSerializer()
     group = GroupField()
     timestamp = TimeSerializer()
+    reactions = FeedReactionsSerializer()
 
     class Meta:
         model = LinkPost
