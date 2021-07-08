@@ -51,7 +51,5 @@ def edit(request):
 
 @api_view(['GET'])
 def feed(request):
-    post_serializers = {0:TextPostSerializer, 1: LinkPostSerializer, 2:  PhotoPostSerializer}
     profile = Profile.get_profile(request.user)
-    return Response([post_serializers[post.post_type](post).data for post in profile.get_feed() if post])
-    # return Response([{'post': post_serializers[post.post_type](post).data, 'profile_reaction': post.reactions.filter(owner=profile).first().reaction if post.reactions.filter(owner=profile).first() else ''} for post in profile.get_feed() if post])
+    return Response([PostSerializer.serialize_post_for_profile(post, profile) for post in profile.get_feed() if post])
