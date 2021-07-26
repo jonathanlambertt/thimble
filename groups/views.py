@@ -64,9 +64,9 @@ def potential_members(request, group_id):
 
 @api_view(['GET'])
 def posts(request, group_id):
-    post_serializers = {0:TextPostSerializer, 1: LinkPostSerializer, 2: PhotoPostSerializer}
-    cur = Group.get_by_uuid(group_id)
+    current_group = Group.get_by_uuid(group_id)
+    current_profile = Profile.get_profile(request.user)
     info = []
-    for post in cur.posts.all().order_by("-timestamp"):
-        info.append(post_serializers[post.post_type](post).data)
+    for post in current_group.posts.all().order_by("-timestamp"):
+        info.append(PostSerializer.serialize_post_for_profile(post, current_profile))
     return Response(info)
