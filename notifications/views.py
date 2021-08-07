@@ -18,7 +18,7 @@ def inbox(request):
 def send(request):
     sender = Profile.get_profile(request.user)
     recipient = Profile.get_by_uuid(request.data['recipient_uuid'])
-    formats = {1: f'{sender.user.username} wants to be friends'}
+    formats = {1: f'{sender.user.username} sent you a friend request.'}
     Notification.create_notification(sender=request.user, recipient=recipient, notification_type=request.data['notification_type'],text=request.data['text'])
     recipient.send_notification(formats[request.data['notification_type']])
     return Response(status=status.HTTP_201_CREATED)
