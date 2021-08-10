@@ -21,9 +21,11 @@ def create(request):
 
 @api_view(['PUT'])
 def edit_group(request, group_id):
-    group = Group.get_by_uuid(group_id)
-    group.edit_attributes(**request.data.dict())
-    return Response(status=status.HTTP_200_OK)
+    if request.data:
+        group = Group.get_by_uuid(group_id)
+        group.edit_attributes(**request.data.dict())
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def group_view(request, group_type):

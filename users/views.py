@@ -45,9 +45,11 @@ def profile(request):
 
 @api_view(['PUT'])
 def edit(request):
-    profile = Profile.get_profile(request.user)
-    profile.edit_attributes(**request.data.dict())
-    return Response(status=status.HTTP_200_OK)
+    if request.data:
+        profile = Profile.get_profile(request.user)
+        profile.edit_attributes(**request.data.dict())
+        return Response(status=status.HTTP_200_OK)
+    return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
 def feed(request):

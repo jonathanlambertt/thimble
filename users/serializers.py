@@ -80,7 +80,7 @@ class FriendsListResultSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Profile
-        exclude = ['id', 'friends']
+        exclude = ['id', 'friends', 'notification_token']
 
 class CountField(serializers.Field):
     def to_representation(self, value):
