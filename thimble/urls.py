@@ -23,4 +23,5 @@ urlpatterns = [
     path('v1/g/', include('groups.urls', namespace='v1')),
     path('v1/p/', include('posts.urls', namespace='v1')),
     path('v1/r/', include('reactions.urls', namespace='v1')),
+    path('', include('web.urls')),
 ]

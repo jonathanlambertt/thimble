@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'groups.apps.GroupsConfig',
     'reactions.apps.ReactionsConfig',
     'notifications.apps.NotificationsConfig',
+    'web.apps.WebConfig',
     'rest_framework.authtoken',
     'polymorphic',
 ]
