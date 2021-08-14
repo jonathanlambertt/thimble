@@ -52,6 +52,6 @@ def edit(request):
     return Response(status=status.HTTP_400_BAD_REQUEST)
 
 @api_view(['GET'])
-def feed(request):
+def feed(request, last_post=None):
     profile = Profile.get_profile(request.user)
-    return Response([PostSerializer.serialize_post_for_profile(post, profile) for post in profile.get_feed() if post])
+    return Response([PostSerializer.serialize_post_for_profile(post, profile) for post in profile.get_feed(last_post) if post])

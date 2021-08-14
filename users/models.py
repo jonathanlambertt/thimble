@@ -40,8 +40,11 @@ class Profile(models.Model):
                 print('Error pushing notification: info<',exc,'>')
                 raise self.retry(exc=exc)
 
-    def get_feed(self):
-        return [Post.objects.filter(uuid=post_uuid.decode('utf-8')).first() for post_uuid in get_recent_posts(str(self.uuid))]
+    def get_feed(self, last_post):
+        total_posts_to_send = 3
+        profile_feed = [post.decode('utf-8') for post in get_recent_posts(str(self.uuid))]
+        last_post_index = profile_feed.index(last_post)+1 if last_post else 0
+        return [Post.objects.filter(uuid=post_uuid).first() for post_uuid in profile_feed[last_post_index:last_post_index+total_posts_to_send]]
 
     def get_by_uuid(uuid):
         return Profile.objects.get(uuid=uuid)
