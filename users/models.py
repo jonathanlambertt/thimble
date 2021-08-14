@@ -41,7 +41,7 @@ class Profile(models.Model):
                 raise self.retry(exc=exc)
 
     def get_feed(self, last_post):
-        total_posts_to_send = 3
+        total_posts_to_send = 10
         profile_feed = [post.decode('utf-8') for post in get_recent_posts(str(self.uuid))]
         last_post_index = profile_feed.index(last_post)+1 if last_post else 0
         return [Post.objects.filter(uuid=post_uuid).first() for post_uuid in profile_feed[last_post_index:last_post_index+total_posts_to_send]]
