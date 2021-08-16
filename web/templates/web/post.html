@@ -1,0 +1,133 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We"
+      crossorigin="anonymous"
+    />
+    <title>Thimble | Post</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <div class="container" style="max-width: 612px">
+      <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+          <a
+            class="navbar-brand"
+            href="{% url 'web:home' %}"
+            style="
+              font-size: 50px;
+              font-family: 'Grand Hotel', sans-serif;
+              color: #000;
+            "
+            >thimble</a
+          >
+        </div>
+      </nav>
+      <div class="card">
+        <div class="card-body">
+          <h5 class="card-title">
+            <div style="display: inline-flex; align-items: center">
+              {% if post.owner.profile_picture %}
+              <img
+                src="{{ post.owner.profile_picture }}"
+                style="
+                  border-radius: 50%;
+                  width: 40px;
+                  border: 0.5px solid #d3d3d3;
+                  margin-right: 11px;
+                "
+              />
+              {% else %}
+              <img
+                style="
+                  border-radius: 50%;
+                  width: 40px;
+                  border: 0.5px solid #d3d3d3;
+                  margin-right: 11px;
+                "
+              />
+              {% endif %} {{ post.owner.user.username }} &nbsp;posted in&nbsp;
+              {{ post.group.name }}
+            </div>
+          </h5>
+          {% if post.post_type == 0 %}
+          <p class="card-text">{{ post.text }}</p>
+          {% endif %} {% if post.post_type == 1 %}
+          <p class="card-text">
+            <a href="{{ post.link }}" target="_blank">{{ post.link }}</a>
+          </p>
+          {% endif %} {% if post.post_type == 2 %}
+          <p class="card-text" style="display: flex; justify-content: center">
+            <img
+              src="{{ post.photo }}"
+              style="object-fit: cover; width: 100%; border-radius: 4px"
+            />
+          </p>
+          {% endif %}
+        </div>
+      </div>
+    </div>
+    <footer class="footer">
+      <div class="container" style="display: flex; justify-content: center">
+        <ul>
+          <li style="display: inline; text-decoration: none; font-size: 17px">
+            <a
+              href="{% url 'web:home' %}"
+              style="text-decoration: none; color: #bfbfbf"
+              >home</a
+            >
+          </li>
+          <li
+            style="
+              display: inline;
+              font-size: 15px;
+              text-decoration: none;
+              color: #bfbfbf;
+            "
+          >
+            |
+          </li>
+          <li style="display: inline; text-decoration: none; font-size: 17px">
+            <a
+              href="{% url 'web:about' %}"
+              style="text-decoration: none; color: #bfbfbf"
+              >about</a
+            >
+          </li>
+          <li
+            style="
+              display: inline;
+              font-size: 15px;
+              text-decoration: none;
+              color: #bfbfbf;
+            "
+          >
+            |
+          </li>
+          <li style="display: inline; text-decoration: none; font-size: 17px">
+            <a href="#" style="text-decoration: none; color: #bfbfbf"
+              >privacy</a
+            >
+          </li>
+        </ul>
+      </div>
+    </footer>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-U1DAWAznBHeqEIlVSCgzq+c9gqGAJn5c/t99JyeKa9xxaYpSvHU5awsuZVVFIhvj"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
