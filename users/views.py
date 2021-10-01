@@ -55,3 +55,10 @@ def edit(request):
 def feed(request, last_post=None):
     profile = Profile.get_profile(request.user)
     return Response([PostSerializer.serialize_post_for_profile(post, profile) for post in profile.get_feed(last_post) if post])
+
+@api_view(['PUT'])
+def remove_friend(request, friend_uuid):
+    current_profile = Profile.get_profile(request.user)
+    remove_profile = Profile.get_by_uuid(friend_uuid)
+    current_profile.friends.remove(remove_profile)
+    return Response(status=status.HTTP_200_OK)

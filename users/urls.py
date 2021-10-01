@@ -12,4 +12,5 @@ urlpatterns = [
     path('login', rest_views.obtain_auth_token),
     path('search/<search_query>', views.search),
     path('friends', views.friends),
+    path('remove/<friend_uuid>', views.remove_friend),
 ]
