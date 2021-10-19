@@ -8,7 +8,6 @@ redis_instance = redis.Redis(host=os.environ['REDIS_HOST'], port=os.environ['RED
 def add_post_to_feed(post_uuid, profile_uuid):
     redis_instance.lpush(f'{profile_uuid}:feed', post_uuid)
 
-
 def get_recent_posts(profile_uuid):
     return redis_instance.lrange(f'{profile_uuid}:feed', 0, -1)
 
