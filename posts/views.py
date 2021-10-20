@@ -9,6 +9,7 @@ from .serializers import *
 
 from users.models import Profile
 from groups.models import Group
+from groups.tasks import distribute_post_to_feed
 from posts.models import Post
 
 import uuid
@@ -24,8 +25,8 @@ def create_post(request):
                 post_uuid = uuid.uuid4()
                 current_group = Group.get_by_uuid(request.data['group'])
                 post_serializer.save(owner=Profile.get_profile(request.user), group=current_group, uuid=post_uuid)
-                [add_post_to_feed(str(post_uuid), str(group_member.uuid)) for group_member in current_group.members.all()]
-
+                #[add_post_to_feed(str(post_uuid), str(group_member.uuid)) for group_member in current_group.members.all()]
+                distribute_post_to_feed(request.data['group'], str(post_uuid))
                 # Send notification to each group member
                 # Find a more elegant solution later
                 for member in current_group.members.all():
