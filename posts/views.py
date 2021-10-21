@@ -26,7 +26,7 @@ def create_post(request):
                 current_group = Group.get_by_uuid(request.data['group'])
                 post_serializer.save(owner=Profile.get_profile(request.user), group=current_group, uuid=post_uuid)
                 #[add_post_to_feed(str(post_uuid), str(group_member.uuid)) for group_member in current_group.members.all()]
-                distribute_post_to_feed(request.data['group'], str(post_uuid))
+                distribute_post_to_feed.delay(request.data['group'], str(post_uuid))
                 # Send notification to each group member
                 # Find a more elegant solution later
                 for member in current_group.members.all():
