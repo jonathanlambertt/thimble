@@ -9,7 +9,7 @@ from .serializers import *
 
 from users.models import Profile
 from groups.models import Group
-from groups.tasks import distribute_post_to_feed
+from groups.tasks import distribute_post_to_feed, notify_group_members
 from posts.models import Post
 
 import uuid
@@ -29,9 +29,10 @@ def create_post(request):
                 distribute_post_to_feed.delay(request.data['group'], str(post_uuid))
                 # Send notification to each group member
                 # Find a more elegant solution later
-                for member in current_group.members.all():
-                    if member.user != request.user:
-                        member.send_notification(f'{request.user.username} posted in {current_group.name}')
+                notify_group_members.delay(request.data['group'], request.user.username)
+                #for member in current_group.members.all():
+                #    if member.user != request.user:
+                #        member.send_notification(f'{request.user.username} posted in {current_group.name}')
 
                 return Response(status=status.HTTP_201_CREATED)
     return Response(status=status.HTTP_400_BAD_REQUEST) # needs to eventually return data to say why it 400
