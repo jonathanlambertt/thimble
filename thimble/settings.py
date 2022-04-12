@@ -29,7 +29,7 @@ if 'PROD_DB_NAME' in os.environ:
 else:
     DEBUG=True
 
-ALLOWED_HOSTS = ['192.168.1.16', '192.168.1.11', '161.35.224.25', 'thimbleapp.co', 'localhost', 'www.thimbleapp.co']
+ALLOWED_HOSTS = ['192.168.1.16', '192.168.1.11', '161.35.224.25', 'thimbleapp.co', 'localhost', 'www.thimbleapp.co', '127.0.0.1']
 
 
 # Application definition
