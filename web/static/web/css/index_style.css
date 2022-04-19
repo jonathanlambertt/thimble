@@ -1,0 +1,41 @@
+a {
+  text-decoration: none;
+  color: #ff878a;
+  font-weight: 500;
+}
+
+a:hover {
+  text-decoration: underline;
+  color: #ff878a;
+}
+
+#headerContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  margin-top: 1rem;
+  align-items: center;
+}
+
+#appName {
+  font-family: "Grand Hotel";
+  font-size: 3.4rem;
+  color: #333;
+  margin-left: 1rem;
+  margin-top: 1rem;
+}
+
+#bodyContainer {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  margin-left: 1rem;
+  margin-right: 1rem;
+}
+
+.promoText {
+  text-align: center;
+  font-size: 1.2rem;
+  font-weight: 400;
+  max-width: 612px;
+}

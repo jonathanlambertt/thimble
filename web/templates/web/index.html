@@ -18,129 +18,25 @@
       href="https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="{% static 'web/css/index_style.css' %}" />
   </head>
   <body>
-    <div
-      class="container"
-      style="
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 750px;
-      "
-    >
-      <div class="row">
-        <div class="col" style="display: flex; justify-content: center">
-          <img src="{% static 'web/preview.png' %}" height="650" />
-        </div>
-        <div class="col" style="display: flex; align-items: center">
-          <div style="flex-direction: row">
-            <div style="display: inline-flex">
-              <img src="{% static 'web/app_icon.png' %}" height="60" />
-              <h3
-                style="
-                  font-family: 'Grand Hotel', Arial;
-                  font-size: 60px;
-                  margin-left: 10px;
-                "
-              >
-                thimble
-              </h3>
-            </div>
-            <p style="margin-top: -18px; font-size: 25px; margin-bottom: 5px">
-              Group sharing made simple.
-            </p>
-            <div style="display: flex; flex-direction: row">
-              <a
-                style="display: flex"
-                href="https://apps.apple.com/us/app/thimble-group-sharing/id1572514346"
-                target="_blank"
-                ><img
-                  style="width: 149px"
-                  src="{% static 'web/app_store_badge.svg' %}"
-              /></a>
-              <a
-                href="https://play.google.com/store/apps/details?id=co.capulus.thimble"
-                target="_blank"
-                ><img
-                  style="width: 187px"
-                  src="{% static 'web/google_play_badge.png' %}"
-              /></a>
-            </div>
-          </div>
-        </div>
-      </div>
+    <div id="headerContainer">
+      <img src="{% static 'web/img/app_icon.svg' %}" width="65" />
+      <h3 id="appName">thimble</h3>
     </div>
-    <footer class="footer">
-      <div class="container" style="display: flex; justify-content: center">
-        <ul>
-          <li style="display: inline; text-decoration: none; font-size: 17px">
-            <a
-              href="{% url 'web:home' %}"
-              style="text-decoration: none; color: #bfbfbf"
-              >home</a
-            >
-          </li>
-          <li
-            style="
-              display: inline;
-              font-size: 15px;
-              text-decoration: none;
-              color: #bfbfbf;
-            "
-          >
-            |
-          </li>
-          <li style="display: inline; text-decoration: none; font-size: 17px">
-            <a
-              href="{% url 'web:about' %}"
-              style="text-decoration: none; color: #bfbfbf"
-              >about</a
-            >
-          </li>
-          <li
-            style="
-              display: inline;
-              font-size: 15px;
-              text-decoration: none;
-              color: #bfbfbf;
-            "
-          >
-            |
-          </li>
-          <li style="display: inline; text-decoration: none; font-size: 17px">
-            <a
-              href="https://www.iubenda.com/privacy-policy/10704237"
-              style="text-decoration: none; color: #bfbfbf"
-              target="_blank"
-              >privacy</a
-            >
-          </li>
-          <li
-            style="
-              display: inline;
-              font-size: 15px;
-              text-decoration: none;
-              color: #bfbfbf;
-            "
-          >
-            |
-          </li>
-          <li style="display: inline; text-decoration: none; font-size: 17px">
-            <a
-              href="https://www.iubenda.com/terms-and-conditions/10704237"
-              style="text-decoration: none; color: #bfbfbf"
-              target="_blank"
-              >terms</a
-            >
-          </li>
-        </ul>
-      </div>
-    </footer>
-    <script
-      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-      crossorigin="anonymous"
-    ></script>
+    <div id="bodyContainer">
+      <p class="promoText">
+        Thimble is an easy way to share what you want, with who you want. Add
+        friends to the groups you create and share updates, links and photos.
+        Did we mention that it's free?
+      </p>
+      <p class="promoText" style="font-weight: 600">
+        We are currently in a closed beta but will be launching soon!
+      </p>
+      <a href="https://www.instagram.com/thimbleappco/" target="_blank"
+        >Follow us on Instagram!</a
+      >
+    </div>
   </body>
 </html>
